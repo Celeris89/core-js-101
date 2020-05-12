@@ -379,8 +379,8 @@ function isBracketsBalanced(str) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -396,8 +396,16 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  let directory = pathes[0];
+  for (let directoryNumb = 1; directoryNumb < pathes.length; directoryNumb += 1) {
+    for (let charIndex = 0; charIndex < directory.length; charIndex += 1) {
+      if (directory[charIndex] !== pathes[directoryNumb][charIndex]) {
+        directory = directory.substring(0, charIndex);
+      }
+    }
+  }
+  return directory.substring(0, directory.lastIndexOf('/') + 1);
 }
 
 
@@ -419,8 +427,11 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const result = new Array(m1.length).fill(0).map(() => new Array(m2[0].length).fill(0));
+  return result.map((row, i) => row.map((val, j) => m1[i].reduce(
+    (sum, elm, k) => sum + (elm * m2[k][j]), 0,
+  )));
 }
 
 
@@ -454,10 +465,33 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  if (position[0][0] === position[1][1] && position[1][1] === position[2][2]) {
+    if ((position[0][0] === position[2][2]) !== undefined) {
+      return position[0][0];
+    }
+  }
+  if (position[2][0] === position[1][1] && position[1][1] === position[0][2]) {
+    if ((position[0][0] === position[0][2]) !== undefined) {
+      return position[2][0];
+    }
+  }
+  for (let i = 0; i < position.length; i += 1) {
+    if (position[i][0] === position[i][1] && position[i][1] === position[i][2]) {
+      if ((position[i][0] === position[i][2]) !== undefined) {
+        if (position[i][1] !== undefined) return position[i][1];
+      }
+    }
+  }
+  for (let i = 0; i < position.length; i += 1) {
+    if (position[0][i] === position[1][i] && position[1][i] === position[2][i]) {
+      if ((position[0][i] === position[2][i]) !== undefined) {
+        if (position[1][i] !== undefined) return position[1][i];
+      }
+    }
+  }
+  return undefined;
 }
-
 
 module.exports = {
   getFizzBuzz,
